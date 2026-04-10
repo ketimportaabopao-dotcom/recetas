@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Recetas para casa 🍼</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --green: #1D9E75;
+    --green-light: #E1F5EE;
+    --green-dark: #0F6E56;
+    --amber: #FAEEDA;
+    --amber-text: #633806;
+    --amber-label: #854F0B;
+    --red: #E24B4A;
+    --bg: #F7F9F7;
+    --card: #ffffff;
+    --text: #1a1a1a;
+    --text-muted: #6b7280;
+    --border: rgba(0,0,0,0.1);
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding-bottom: 3rem;
+  }
+  .app-header {
+    background: var(--green);
+    padding: 2rem 1.25rem 3.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .app-header::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; left: 0; right: 0;
+    height: 40px;
+    background: var(--bg);
+    border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+  }
+  .app-header h1 { font-size: 24px; font-weight: 800; color: #fff; }
+  .app-header p { font-size: 14px; color: rgba(255,255,255,0.8); margin-top: 5px; }
+  .container { max-width: 480px; margin: 0 auto; padding: 0 1.25rem; }
+  .card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+    margin-bottom: 1rem;
+  }
+  .key-banner {
+    background: #fff8e1;
+    border: 1.5px dashed #f0b429;
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+    margin-bottom: 1rem;
+    font-size: 13px;
+    color: #7a5c00;
+    line-height: 1.8;
+  }
+  .key-banner strong { display: block; margin-bottom: 4px; font-size: 14px; }
+  .key-banner a { color: var(--green); font-weight: 700; }
+  label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: block;
+    margin-bottom: 6px;
+    margin-top: 14px;
+  }
+  label:first-of-type { margin-top: 0; }
+  input, textarea {
+    width: 100%;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 11px 14px;
+    font-size: 15px;
+    font-family: 'Nunito', sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  input:focus, textarea:focus { border-color: var(--green); }
+  textarea { resize: none; min-height: 80px; }
+  .btn {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: var(--radius-sm);
+    background: var(--green);
+    color: #fff;
+    font-size: 16px;
+    font-weight: 700;
+    font-family: 'Nunito', sans-serif;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: background 0.2s, transform 0.1s;
+  }
+  .btn:hover { background: var(--green-dark); }
+  .btn:active { transform: scale(0.98); }
+  .btn-outline {
+    background: transparent;
+    border: 1.5px solid var(--border);
+    color: var(--text-muted);
+    margin-top: 0.75rem;
+  }
+  .btn-outline:hover { background: var(--bg); }
+  .loading { text-align: center; padding: 2.5rem 1rem; }
+  .spinner {
+    display: inline-block;
+    width: 32px; height: 32px;
+    border: 3px solid var(--green-light);
+    border-top-color: var(--green);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading p { font-size: 14px; color: var(--text-muted); margin-top: 14px; font-weight: 600; }
+  .recipe-title { font-size: 22px; font-weight: 800; color: var(--text); margin-bottom: 10px; line-height: 1.3; }
+  .meta-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.25rem; }
+  .badge { font-size: 12px; font-weight: 700; color: var(--green-dark); background: var(--green-light); padding: 5px 14px; border-radius: 20px; }
+  .section-label { font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 12px; }
+  .step { display: flex; gap: 12px; margin-bottom: 16px; align-items: flex-start; }
+  .step-num { min-width: 30px; height: 30px; border-radius: 50%; background: var(--green); color: #fff; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .step-text { font-size: 15px; color: var(--text); line-height: 1.65; padding-top: 4px; }
+  .tip-box { background: var(--amber); border-radius: var(--radius-sm); padding: 14px 16px; margin-top: 1.25rem; }
+  .tip-label { font-size: 11px; font-weight: 800; color: var(--amber-label); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 5px; }
+  .tip-text { font-size: 14px; color: var(--amber-text); line-height: 1.6; }
+  .divider { border: none; border-top: 1.5px solid var(--border); margin: 1.25rem 0; }
+  .yt-btn { display: flex; align-items: center; gap: 12px; width: 100%; padding: 13px 16px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); background: var(--card); cursor: pointer; font-family: 'Nunito', sans-serif; text-decoration: none; transition: border-color 0.2s; }
+  .yt-btn:hover { border-color: var(--red); }
+  .yt-icon { width: 36px; height: 36px; background: var(--red); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .yt-icon svg { width: 16px; height: 16px; fill: white; }
+  .yt-info { text-align: left; }
+  .yt-title { font-size: 14px; font-weight: 700; color: var(--text); }
+  .yt-sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+  .error-box { background: #fff0f0; border: 1.5px solid #fca5a5; border-radius: var(--radius-sm); padding: 14px 16px; font-size: 14px; color: #b91c1c; line-height: 1.6; margin-top: 0.75rem; }
+  .error-box strong { display: block; margin-bottom: 4px; }
+  .hidden { display: none; }
+</style>
+</head>
+<body>
+
+<div class="app-header">
+  <h1>Recetas para casa 🍼</h1>
+  <p>Escribe el plato y te doy la receta paso a paso</p>
+</div>
+
+<div class="container" style="margin-top: -1rem;">
+
+  <div class="key-banner">
+    <strong>⚙️ Configura tu API Key de OpenRouter</strong>
+    1. Ve a <a href="https://openrouter.ai" target="_blank">openrouter.ai</a> → crea cuenta con Google<br>
+    2. Ve a <strong>Keys</strong> → <strong>Create Key</strong><br>
+    3. Copia la key (empieza con <strong>sk-or-...</strong>) y pégala abajo
+  </div>
+
+  <div id="pantalla-buscar">
+    <div class="card">
+      <label>Tu API Key de OpenRouter</label>
+      <input type="password" id="api-key" placeholder="sk-or-..." />
+
+      <label>Nombre del plato</label>
+      <input type="text" id="plato" placeholder="Ej: puré de zanahoria con pollo" />
+
+      <label>O escribe los ingredientes que tienes</label>
+      <textarea id="ingredientes" placeholder="Ej: zapallo, pechuga de pollo, aceite de oliva..."></textarea>
+
+      <label>Notas del bebé (edad, restricciones)</label>
+      <input type="text" id="notas" placeholder="Ej: 8 meses, sin sal, sin gluten" />
+
+      <button class="btn" onclick="generarReceta()">Ver receta</button>
+      <div id="error-msg" class="error-box hidden"></div>
+    </div>
+  </div>
+
+  <div id="pantalla-loading" class="hidden">
+    <div class="card">
+      <div class="loading">
+        <div class="spinner"></div>
+        <p>Generando tu receta...</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="pantalla-receta" class="hidden">
+    <div class="card">
+      <div class="recipe-title" id="r-titulo"></div>
+      <div class="meta-row" id="r-meta"></div>
+      <div class="section-label">Pasos</div>
+      <div id="r-pasos"></div>
+      <div class="tip-box" id="r-tip" style="display:none;">
+        <div class="tip-label">💡 Consejo</div>
+        <div class="tip-text" id="r-tip-text"></div>
+      </div>
+      <hr class="divider" />
+      <a id="r-yt" href="#" target="_blank" class="yt-btn">
+        <div class="yt-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        <div class="yt-info">
+          <div class="yt-title">Ver video en YouTube</div>
+          <div class="yt-sub" id="r-yt-sub"></div>
+        </div>
+      </a>
+      <button class="btn btn-outline" onclick="nuevaReceta()">← Cocinar otra cosa</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+async function generarReceta() {
+  const apiKey = document.getElementById('api-key').value.trim();
+  const plato = document.getElementById('plato').value.trim();
+  const ing = document.getElementById('ingredientes').value.trim();
+  const notas = document.getElementById('notas').value.trim();
+  const errorEl = document.getElementById('error-msg');
+
+  errorEl.classList.add('hidden');
+
+  if (!apiKey) { mostrarError('Primero ingresa tu API Key de OpenRouter.'); return; }
+  if (!plato && !ing) { mostrarError('Escribe el nombre del plato o los ingredientes.'); return; }
+
+  document.getElementById('pantalla-buscar').classList.add('hidden');
+  document.getElementById('pantalla-loading').classList.remove('hidden');
+
+  const prompt = `Eres un asistente de cocina para un papá que cuida a su bebé y no tiene mucha experiencia cocinando.
+${plato ? 'Plato a preparar: ' + plato : ''}
+${ing ? 'Ingredientes disponibles: ' + ing : ''}
+${notas ? 'Notas del bebé: ' + notas : ''}
+
+Crea una receta en español, apta para bebé (sin sal excesiva, sin procesados, ingredientes naturales).
+Responde SOLO con este JSON, sin texto extra ni backticks:
+{
+  "titulo": "nombre del plato",
+  "tiempo": "XX minutos",
+  "dificultad": "Fácil",
+  "pasos": ["paso 1 detallado con tiempo", "paso 2", "paso 3"],
+  "tip": "consejo para alguien que no cocina seguido",
+  "youtube": "términos para buscar en YouTube"
+}`;
+
+  try {
+    const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`
+      },
+      body: JSON.stringify({
+        model: 'meta-llama/llama-3.3-8b-instruct:free',
+        messages: [{ role: 'user', content: prompt }],
+        max_tokens: 1000
+      })
+    });
+
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.error?.message || 'Error de API');
+    }
+
+    const data = await res.json();
+    const text = data.choices[0].message.content;
+    const clean = text.replace(/```json|```/g, '').trim();
+    const r = JSON.parse(clean);
+    mostrarReceta(r);
+  } catch(e) {
+    document.getElementById('pantalla-loading').classList.add('hidden');
+    document.getElementById('pantalla-buscar').classList.remove('hidden');
+    mostrarError('Error: ' + e.message);
+  }
+}
+
+function mostrarReceta(r) {
+  document.getElementById('r-titulo').textContent = r.titulo;
+  document.getElementById('r-meta').innerHTML =
+    `<span class="badge">⏱ ${r.tiempo}</span><span class="badge">👨‍🍳 ${r.dificultad}</span>`;
+  document.getElementById('r-pasos').innerHTML = r.pasos.map((p, i) =>
+    `<div class="step"><div class="step-num">${i+1}</div><div class="step-text">${p}</div></div>`
+  ).join('');
+  if (r.tip) {
+    document.getElementById('r-tip').style.display = 'block';
+    document.getElementById('r-tip-text').textContent = r.tip;
+  }
+  const ytUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(r.youtube || r.titulo)}`;
+  document.getElementById('r-yt').href = ytUrl;
+  document.getElementById('r-yt-sub').textContent = r.youtube || r.titulo;
+  document.getElementById('pantalla-loading').classList.add('hidden');
+  document.getElementById('pantalla-receta').classList.remove('hidden');
+}
+
+function nuevaReceta() {
+  document.getElementById('pantalla-receta').classList.add('hidden');
+  document.getElementById('pantalla-buscar').classList.remove('hidden');
+  document.getElementById('plato').value = '';
+  document.getElementById('ingredientes').value = '';
+  document.getElementById('notas').value = '';
+  document.getElementById('error-msg').classList.add('hidden');
+}
+
+function mostrarError(msg) {
+  const el = document.getElementById('error-msg');
+  el.innerHTML = '<strong>⚠️ Atención</strong> ' + msg;
+  el.classList.remove('hidden');
+}
+</script>
+</body>
+</html>
